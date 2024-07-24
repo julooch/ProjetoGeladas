@@ -45,10 +45,6 @@ public class Bebida {
     private Date dataCadastro;
 
     @NotNull
-    @Column(nullable = false)
-    private int quantidade = 0;
-
-    @NotNull
     @Column
     private BebidaTipo tipo;
     
