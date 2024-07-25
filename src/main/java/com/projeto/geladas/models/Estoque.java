@@ -25,7 +25,7 @@ public class Estoque {
     private int quantidade = 0;
 
     @OneToOne
-    @Column
+    @JoinColumn(name="bebida_id")
     private Bebida bebida;
 
 }
