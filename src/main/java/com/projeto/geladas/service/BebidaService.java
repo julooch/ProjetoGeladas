@@ -1,11 +1,12 @@
 package com.projeto.geladas.service;
 
-import com.projeto.geladas.models.Bebida;
-import com.projeto.geladas.models.Estoque;
-import com.projeto.geladas.repositories.BebidaRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import com.projeto.geladas.models.Bebida;
+import com.projeto.geladas.repositories.BebidaRepository;
 
 @Service
 public class BebidaService {
