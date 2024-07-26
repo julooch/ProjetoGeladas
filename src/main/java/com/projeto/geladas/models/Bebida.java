@@ -2,14 +2,20 @@ package com.projeto.geladas.models;
 
 import java.util.Date;
 
-import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -40,12 +46,16 @@ public class Bebida {
     @Column
     private double preco;
 
-    @UpdateTimestamp
+    @Temporal(TemporalType.DATE)
     @Column
     private Date dataCadastro;
 
-    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column
     private BebidaTipo tipo;
+
+    @OneToOne(mappedBy = "bebida", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Estoque estoque;
     
 }

@@ -1,5 +1,7 @@
 package com.projeto.geladas.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,10 +31,12 @@ public class Estoque {
 
     @NotNull
     @Column(nullable = false)
-    private int quantidade = 0;
+    private int quantidade = 0; // Valor padrão
 
     @OneToOne
-    @JoinColumn(name="bebida_id")
+    @JoinColumn(name = "bebida_id")
+    @JsonIgnore
     private Bebida bebida;
+
 
 }
