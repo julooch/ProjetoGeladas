@@ -3,6 +3,7 @@ package com.projeto.geladas.models;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,6 +57,7 @@ public class Bebida {
 
     @OneToOne(mappedBy = "bebida", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @JsonManagedReference
     private Estoque estoque;
     
 }

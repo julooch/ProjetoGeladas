@@ -1,6 +1,7 @@
 package com.projeto.geladas.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,9 @@ public class BebidaService {
         bebidaRepository.deleteById(id);
     }
 
+    public Bebida buscarBebidaPorId(Long id) {
+        Optional<Bebida> bebida = bebidaRepository.findById(id);
+        return bebida.orElse(null);
+    }
 
 }

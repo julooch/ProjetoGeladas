@@ -1,6 +1,7 @@
 package com.projeto.geladas.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,21 @@ public class EstoqueService {
     public void deletarEstoque(Long id) {
         estoqueRepository.deleteById(id);
     }
+
+    public Estoque atualizarQuantidade(Long id, int quantidade) {
+        return estoqueRepository.findById(id)
+                .map(estoque -> {
+                    estoque.setQuantidade(quantidade);
+                    return estoqueRepository.save(estoque);
+                })
+                .orElse(null);
+    }
+
+    public Estoque buscarEstoquePorId(Long id) {
+        Optional<Estoque> estoque = estoqueRepository.findById(id);
+        return estoque.orElse(null);
+    }
+
 
 
 }

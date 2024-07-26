@@ -46,5 +46,11 @@ public class BebidaController {
         bebidaService.deletarBebida(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Bebida> obterBebidaPorId(@PathVariable Long id) {
+        Bebida bebida = bebidaService.buscarBebidaPorId(id);
+        return new ResponseEntity<>(bebida, HttpStatus.OK);
+    }
     
 }
