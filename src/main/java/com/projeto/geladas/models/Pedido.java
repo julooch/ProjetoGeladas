@@ -1,8 +1,12 @@
 package com.projeto.geladas.models;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,6 +34,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"itensPedido"})
 public class Pedido {
 
     @Id
@@ -60,7 +65,14 @@ public class Pedido {
     private Date dataPagamento;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemPedido> itensPedido;
+    @JsonManagedReference
+    private List<ItemPedido> itensPedido = new ArrayList<>();
+
+    public void adicionarItem(ItemPedido item) {
+        itensPedido.add(item);
+        item.setPedido(this);
+        calcularValorTotal();
+    }
 
     @PrePersist
     @PreUpdate

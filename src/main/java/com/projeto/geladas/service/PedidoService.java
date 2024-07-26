@@ -28,20 +28,21 @@ public class PedidoService {
 
     @Transactional
     public Pedido criarPedido(Pedido pedido) {
-        // Atualiza o preço unitário de cada item do pedido
+        // Atualiza o preço unitário de cada item do pedido e define o pedido
         pedido.getItensPedido().forEach(item -> {
             item.setPrecoUnitario(item.getBebida().getPreco());
+            item.setPedido(pedido);
         });
-        
+
         // Calcula o valor total do pedido
         pedido.calcularValorTotal();
-        
+
         // Salva o pedido e os itens do pedido
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
-        
+
         // Atualiza o estoque com base nos itens do pedido
         atualizarEstoque(pedido);
-        
+
         return pedidoSalvo;
     }
 
@@ -49,14 +50,14 @@ public class PedidoService {
         pedido.getItensPedido().forEach(item -> {
             Estoque estoque = estoqueRepository.findByBebidaId(item.getBebida().getId())
                 .orElseThrow(() -> new RuntimeException("Estoque não encontrado para a bebida id " + item.getBebida().getId()));
-            
+
             // Atualiza a quantidade do estoque
             int novaQuantidade = estoque.getQuantidade() - item.getQuantidade();
-            
+
             if (novaQuantidade < 0) {
                 throw new RuntimeException("Estoque insuficiente para a bebida id " + item.getBebida().getId());
             }
-            
+
             estoque.setQuantidade(novaQuantidade);
             estoqueRepository.save(estoque);
         });

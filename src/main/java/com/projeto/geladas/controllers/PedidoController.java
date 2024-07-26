@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projeto.geladas.DTOs.ItemPedidoDTO;
+import com.projeto.geladas.DTOs.PedidoDTO;
+import com.projeto.geladas.models.ItemPedido;
 import com.projeto.geladas.models.Pedido;
+import com.projeto.geladas.repositories.BebidaRepository;
 import com.projeto.geladas.service.PedidoService;
 
 @RestController
@@ -23,16 +27,35 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private BebidaRepository bebidaRepository;
+
     @GetMapping
     public List<Pedido> listarPedidos() {
         return pedidoService.listarPedidos();
     }
 
-    @PostMapping
-    public ResponseEntity<Pedido> salvarPedido(@RequestBody Pedido pedido) {
-        Pedido novoPedido = pedidoService.criarPedido(pedido);
-        return new ResponseEntity<>(novoPedido, HttpStatus.CREATED);
+    @PostMapping("/pedidos")
+    public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoDTO pedidoDTO) {
+        Pedido pedido = new Pedido();
+        pedido.setNumeroPedido(pedidoDTO.getNumeroPedido());
+        pedido.setFormaPagamento(pedidoDTO.getFormaPagamento());
+        pedido.setStatusPagamento(pedidoDTO.isStatusPagamento());
+        pedido.setDataPagamento(pedidoDTO.getDataPagamento());
+
+        // Adicionar itens ao pedido
+        for (ItemPedidoDTO itemDTO : pedidoDTO.getItensPedido()) {
+            ItemPedido item = new ItemPedido();
+            item.setBebida(bebidaRepository.findById(itemDTO.getBebidaId()).orElseThrow(() -> new ResourceNotFoundException("Bebida não encontrada")));
+            item.setPrecoUnitario(itemDTO.getPrecoUnitario());
+            item.setQuantidade(itemDTO.getQuantidade());
+            pedido.adicionarItem(item);
+        }
+
+        Pedido pedidoSalvo = pedidoService.criarPedido(pedido);
+        return ResponseEntity.ok(pedidoSalvo);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> buscarPedidoPorId(@PathVariable Long id) {
