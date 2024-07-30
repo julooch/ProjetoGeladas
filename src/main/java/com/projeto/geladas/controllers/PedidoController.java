@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.geladas.DTOs.ItemPedidoDTO;
 import com.projeto.geladas.DTOs.PedidoDTO;
+import com.projeto.geladas.exceptions.ResourcesNotFoundException;
 import com.projeto.geladas.models.ItemPedido;
 import com.projeto.geladas.models.Pedido;
 import com.projeto.geladas.repositories.BebidaRepository;
@@ -35,7 +36,7 @@ public class PedidoController {
         return pedidoService.listarPedidos();
     }
 
-    @PostMapping("/pedidos")
+    @PostMapping
     public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoDTO pedidoDTO) {
         Pedido pedido = new Pedido();
         pedido.setNumeroPedido(pedidoDTO.getNumeroPedido());
@@ -46,9 +47,9 @@ public class PedidoController {
         // Adicionar itens ao pedido
         for (ItemPedidoDTO itemDTO : pedidoDTO.getItensPedido()) {
             ItemPedido item = new ItemPedido();
-            item.setBebida(bebidaRepository.findById(itemDTO.getBebidaId()).orElseThrow(() -> new ResourceNotFoundException("Bebida não encontrada")));
-            item.setPrecoUnitario(itemDTO.getPrecoUnitario());
-            item.setQuantidade(itemDTO.getQuantidade());
+            item.setBebida(bebidaRepository.findById(itemDTO.bebidaId()).orElseThrow(() -> new ResourcesNotFoundException("Bebida não encontrada")));
+            item.setPrecoUnitario(itemDTO.precoUnitario());
+            item.setQuantidade(itemDTO.quantidade());
             pedido.adicionarItem(item);
         }
 

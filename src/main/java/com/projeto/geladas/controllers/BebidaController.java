@@ -42,9 +42,10 @@ public class BebidaController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarBebida(@PathVariable Long id) {
-        bebidaService.deletarBebida(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> excluirBebida(@PathVariable Long id) {
+            bebidaService.excluirBebida(id);
+            return ResponseEntity.noContent().build();
+        
     }
 
     @GetMapping("/{id}")

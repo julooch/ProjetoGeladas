@@ -1,6 +1,7 @@
 package com.projeto.geladas.models;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -13,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -59,5 +61,8 @@ public class Bebida {
     @JsonIgnore
     @JsonManagedReference
     private Estoque estoque;
+
+    @OneToMany(mappedBy = "bebida", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemPedido> itensPedidos;
     
 }
