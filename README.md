@@ -1,6 +1,6 @@
 # Projeto Java Spring - Gerenciamento de Bebidas, Estoque e Pedidos
 
-Bem-vindo ao repositório do projeto de gerenciamento de bebidas e pedidos desenvolvido com Java Spring! Este projeto demonstra a construção de uma aplicação robusta utilizando arquitetura MVC e microserviços, com o objetivo de gerenciar bebidas e pedidos de forma eficiente e escalável.
+Bem-vindo ao repositório do projeto de gerenciamento de bebidas, estoques e pedidos desenvolvido com Java Spring! Este projeto demonstra a construção de uma aplicação robusta utilizando arquitetura MVC e microserviços, com o objetivo de gerenciar bebidas e pedidos de forma eficiente e escalável.
 
 ## 📋 Descrição
 
