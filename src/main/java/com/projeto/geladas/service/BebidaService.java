@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.projeto.geladas.exceptions.BebidaSaveException;
 import com.projeto.geladas.exceptions.ResourcesNotFoundException;
 import com.projeto.geladas.models.Bebida;
 import com.projeto.geladas.models.Estoque;
@@ -24,14 +25,17 @@ public class BebidaService {
     private ItemPedidoRepository itemPedidoRepository;
 
     public Bebida salvarBebida(Bebida bebida) {
-        // Inicializar o estoque com um valor padrão
-        Estoque estoque = new Estoque();
-        estoque.setQuantidade(0); // Valor padrão para quantidade
-        estoque.setBebida(bebida);
-        
-        bebida.setEstoque(estoque);
-        
-        return bebidaRepository.save(bebida);
+        try {
+            Estoque estoque = new Estoque();
+            estoque.setQuantidade(0); // Valor padrão para quantidade
+            estoque.setBebida(bebida);
+            
+            bebida.setEstoque(estoque);
+            
+            return bebidaRepository.save(bebida);
+        } catch (Exception e) {
+            throw new BebidaSaveException("Não foi possível salvar a bebida: " + e.getMessage());
+        }
     }
 
     public List<Bebida> listarBebidas() {

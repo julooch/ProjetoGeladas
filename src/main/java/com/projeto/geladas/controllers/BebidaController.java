@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projeto.geladas.exceptions.BebidaSaveException;
 import com.projeto.geladas.models.Bebida;
 import com.projeto.geladas.service.BebidaService;
 
@@ -35,8 +36,10 @@ public class BebidaController {
         try {
             Bebida novaBebida = bebidaService.salvarBebida(bebida);
             return new ResponseEntity<>(novaBebida, HttpStatus.CREATED);
-        } catch (Exception e) {
+        } catch (BebidaSaveException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Ocorreu um erro inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
